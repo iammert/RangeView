@@ -12,26 +12,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val rangeView = findViewById<RangeView>(R.id.rangeView)
-        rangeView.rangeValueChangeListener = object : RangeView.OnRangeValueListener {
-            override fun rangeChanged(maxValue: Float, minValue: Float, currentLeftValue: Float, currentRightValue: Float) {
 
-            }
+        rangeView.rangeValueChangeListener = object : RangeView.OnRangeValueListener {
+            override fun rangeChanged(maxValue: Float, minValue: Float, currentLeftValue: Float, currentRightValue: Float) {}
         }
 
         rangeView.rangePositionChangeListener = object : RangeView.OnRangePositionListener {
-            override fun leftTogglePositionChanged(xCoordinate: Float, value: Float) {
+            override fun leftTogglePositionChanged(xCoordinate: Float, value: Float) {}
 
-            }
-
-            override fun rightTogglePositionChanged(xCoordinate: Float, value: Float) {
-
-            }
+            override fun rightTogglePositionChanged(xCoordinate: Float, value: Float) {}
         }
 
-        rangeView.rangeDraggingChangeListener = object :RangeView.OnRangeDraggingListener{
-            override fun onDraggingStateChanged(draggingState: DraggingState) {
-
-            }
+        rangeView.rangeDraggingChangeListener = object : RangeView.OnRangeDraggingListener {
+            override fun onDraggingStateChanged(draggingState: DraggingState) {}
         }
     }
 }

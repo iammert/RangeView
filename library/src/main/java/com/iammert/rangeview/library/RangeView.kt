@@ -34,7 +34,11 @@ class RangeView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     private var minValue: Float = DEFAULT_MIN_VALUE
 
-    private var bgColor : Int = ContextCompat.getColor(context, R.color.rangeView_colorBackground)
+    private var currentLeftValue: Float? = null
+
+    private var currentRightValue: Float? = null
+
+    private var bgColor: Int = ContextCompat.getColor(context, R.color.rangeView_colorBackground)
 
     private var strokeColor: Int = ContextCompat.getColor(context, R.color.rangeView_colorStroke)
 
@@ -109,9 +113,21 @@ class RangeView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
         totalValueRect.set(0f + horizontalMargin, 0f, measuredWidth.toFloat() - horizontalMargin, measuredHeight.toFloat())
 
-        rangeValueRectF.set(0f + horizontalMargin, 0f, measuredWidth.toFloat() - horizontalMargin, measuredHeight.toFloat())
-
-
+        if (currentLeftValue == null || currentRightValue == null) {
+            rangeValueRectF.set(
+                    totalValueRect.left,
+                    totalValueRect.top,
+                    totalValueRect.right,
+                    totalValueRect.bottom)
+        } else {
+            val leftRangePosition = ((totalValueRect.width()) * currentLeftValue!!) / maxValue
+            val rightRangePosition = (totalValueRect.width() * currentRightValue!!) / maxValue
+            rangeValueRectF.set(
+                    leftRangePosition + horizontalMargin,
+                    totalValueRect.top,
+                    rightRangePosition + horizontalMargin,
+                    totalValueRect.bottom)
+        }
         rangeStrokeRectF.set(rangeValueRectF.left,
                 rangeValueRectF.top + strokeWidth / 2,
                 rangeValueRectF.right,
@@ -205,12 +221,39 @@ class RangeView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                     }
                 }
             }
-            MotionEvent.ACTION_UP -> draggingStateData = DraggingStateData.idle()
+            MotionEvent.ACTION_UP -> {
+                rangeDraggingChangeListener?.onDraggingStateChanged(DraggingState.DRAGGING_END)
+                draggingStateData = DraggingStateData.idle()
+            }
         }
 
         rangeDraggingChangeListener?.onDraggingStateChanged(draggingStateData.draggingState)
 
         return true
+    }
+
+    fun setMaxValue(maxValue: Float) {
+        this.maxValue = maxValue
+        postInvalidate()
+    }
+
+    fun setMinValue(minValue: Float) {
+        this.minValue = minValue
+        postInvalidate()
+    }
+
+    fun setCurrentValues(leftValue: Float, rightValue: Float) {
+        currentLeftValue = leftValue
+        currentRightValue = rightValue
+        requestLayout()
+        postInvalidate()
+    }
+
+    fun getXPositionOfValue(value: Float): Float {
+        if (value < minValue || value > maxValue) {
+            return 0f
+        }
+        return (((totalValueRect.width()) * value) / maxValue) + horizontalMargin
     }
 
     private fun resolveMovingWay(motionEvent: MotionEvent, stateData: DraggingStateData): Direction {
@@ -283,6 +326,9 @@ class RangeView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
         val leftValue = Math.min(firstValue, secondValue)
         val rightValue = Math.max(firstValue, secondValue)
+
+        currentLeftValue = leftValue
+        currentRightValue = rightValue
 
         rangeValueChangeListener?.rangeChanged(maxValue, minValue, leftValue, rightValue)
     }

@@ -39,7 +39,7 @@ maven { url 'https://jitpack.io' }
 
 ```gradle
 dependencies {
-  compile 'com.github.iammert::1.2.1'
+  compile 'com.github.iammert:rangeview:0.1'
 }
 ```
 

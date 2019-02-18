@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="rangeView_colorMask">#70000000</color>
+    <color name="rangeView_colorStroke">#FFFFFF</color>
+    <color name="rangeView_colorBackground">#ff13a5 </color>
+
+</resources>

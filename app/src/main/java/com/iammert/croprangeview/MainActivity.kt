@@ -1,6 +1,6 @@
 package com.iammert.croprangeview
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.iammert.rangeview.library.DraggingState
 import com.iammert.rangeview.library.RangeView

@@ -1,7 +1,7 @@
 package com.iammert.croprangeview
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.iammert.rangeview.library.DraggingState
 import com.iammert.rangeview.library.RangeView
 
@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
 
         rangeView.rangeDraggingChangeListener = object : RangeView.OnRangeDraggingListener {
             override fun onDraggingStateChanged(draggingState: DraggingState) {}
+        }
+
+        rangeView.rangeDraggingEndValueListener = object : RangeView.onRangeDraggingEndValueListener {
+            override fun onRangeChanged(currentLeftValue: Float, currentRightValue: Float) {}
         }
     }
 }

@@ -2,7 +2,7 @@ package com.iammert.rangeview.library
 
 import android.content.Context
 import android.graphics.*
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -24,11 +24,17 @@ class RangeView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         fun onDraggingStateChanged(draggingState: DraggingState)
     }
 
+    interface onRangeDraggingEndValueListener {
+        fun onRangeChanged(currentLeftValue: Float, currentRightValue: Float)
+    }
+
     var rangeValueChangeListener: OnRangeValueListener? = null
 
     var rangePositionChangeListener: OnRangePositionListener? = null
 
     var rangeDraggingChangeListener: OnRangeDraggingListener? = null
+
+    var rangeDraggingEndValueListener: onRangeDraggingEndValueListener? = null
 
     private var maxValue: Float = DEFAULT_MAX_VALUE
 
@@ -223,6 +229,7 @@ class RangeView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             }
             MotionEvent.ACTION_UP -> {
                 rangeDraggingChangeListener?.onDraggingStateChanged(DraggingState.DRAGGING_END)
+                rangeDraggingEndValueListener?.onRangeChanged(getLeftValue(), getRightValue())
                 draggingStateData = DraggingStateData.idle()
             }
         }
